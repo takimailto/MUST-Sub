@@ -94,7 +94,7 @@ def main(args):
     vae_image = AutoencoderKL.from_pretrained(args.image_vae_path)
     vae_image = vae_image.to(args.device2).eval()
 
-    dataset = TemporalDataset()
+    dataset = TemporalDataset(list_path=args.patient_list_file)
     train_dataloader = DataLoader(dataset, batch_size=2, shuffle=True, num_workers=2)
     
     param_groups = filter(lambda p: p.requires_grad, ARmodel.parameters())
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     parser.add_argument('--pretrained_path', help="Path of the pretrained first-stage model")
     parser.add_argument('--video_vae_path', help="Path of the pretrained video-VAE model")
     parser.add_argument('--image_vae_path', help="Path of the pretrained image-VAE model")
+    parser.add_argument('--patient_list_file', help="File contain the list of patient")
     parser.add_argument('--device1')
     parser.add_argument('--device2')
-    
     main(args)
